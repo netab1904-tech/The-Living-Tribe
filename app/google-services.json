@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "990914830011",
+    "project_id": "the-living-tribe",
+    "storage_bucket": "the-living-tribe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990914830011:android:237518ec8334f4750d539e",
+        "android_client_info": {
+          "package_name": "com.example.thelivingtribe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBajE66fB5Mqorv7roh87ST28H10krxjpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
