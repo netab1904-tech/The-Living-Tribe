@@ -1,24 +1,41 @@
+import java.util.Properties
+
+// טעינת מפתחות מתוך local.properties
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
 }
 
 android {
     namespace = "com.example.thelivingtribe"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.thelivingtribe"
-        minSdk = 24
-        targetSdk = 36
+        minSdk = 26
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // הוספת השדות ל-BuildConfig
+        val supabaseUrl = localProperties.getProperty("SUPABASE_URL") ?: ""
+        val supabaseAnonKey = localProperties.getProperty("SUPABASE_ANON_KEY") ?: ""
+
+        buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnonKey\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -30,9 +47,14 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
     }
 }
 
@@ -49,4 +71,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+
+    // Firebase Firestore
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.0")
+
+    // ספריות להעלאת תמונות וניהול רשת
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.picasso:picasso:2.8")
 }

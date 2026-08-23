@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -16,56 +15,57 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:text="The Living Tribe"
+            android:layout_marginTop="32dp"
+            android:text="Join The Tribe"
             android:textColor="#3D4A3E"
-            android:textSize="28sp"
+            android:textSize="26sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Healthy habits grow stronger in community"
+            android:text="Create your account to start building habits"
             android:textColor="#6B705C"
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/etFullName"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="32dp"
+            android:background="@android:drawable/editbox_background"
+            android:hint="Full Name"
+            android:inputType="textPersonName"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/etRegisterEmail"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
             android:background="@android:drawable/editbox_background"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:padding="12dp" />
 
         <EditText
-            android:id="@+id/etPassword"
+            android:id="@+id/etRegisterPassword"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:background="@android:drawable/editbox_background"
-            android:hint="Password"
+            android:hint="Password (min 6 characters)"
             android:inputType="textPassword"
             android:padding="12dp" />
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnSubmitRegister"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#58644A"
-            android:text="Login"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/btnRegister"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="12dp"
             android:backgroundTint="#A3B18A"
-            android:text="Register"
+            android:text="Create Account"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>
