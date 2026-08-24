@@ -30,9 +30,8 @@ class FeedAdapter(private val posts: List<Post>) :
     private val db = FirebaseFirestore.getInstance()
     private val httpClient = OkHttpClient()
 
-    private val supabaseUrl = "https://jjwnatpbexkfdnggdwrj.supabase.co"
-    private val supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impqd25hdHBiZXhrZmRuZ2dkd3JqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NTIzNDEsImV4cCI6MjEwMTQyODM0MX0.2hHggEI_jSNnH9n_VbiFDmKHKt8cF_b4utQ1cpculY4"
-
+    private val supabaseUrl = BuildConfig.SUPABASE_URL
+    private val supabaseAnonKey = BuildConfig.SUPABASE_ANON_KEY
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvUser: TextView = itemView.findViewById(R.id.tvPostUser)
         val tvMission: TextView = itemView.findViewById(R.id.tvPostMission)

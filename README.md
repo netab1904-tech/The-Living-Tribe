@@ -1,141 +1,227 @@
-<div align="center">
-  <img src="docs/assets/readme-banner.svg" alt="The Living Tribe — Android community application" width="100%" />
+# The Living Tribe
 
-  <br />
+The Living Tribe is a native Android community app that helps people build healthy habits together. Members can complete daily rituals, earn tribe points, share photo proof of their progress, encourage one another in a live community feed, and compete on a real-time leaderboard.
 
-[![Android](https://img.shields.io/badge/Android-7.0%2B-3DDC84?logo=android&logoColor=white)](https://developer.android.com/)
-[![Kotlin](https://img.shields.io/badge/Kotlin-JVM_11-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/)
-[![Firebase](https://img.shields.io/badge/Firebase-Authentication-FFCA28?logo=firebase&logoColor=1f2937)](https://firebase.google.com/docs/auth)
+## Main Features
 
-A clean Android foundation for building a connected community experience.
-</div>
+### Authentication and member profiles
 
-## Table of Contents
+- Register with a full name, email address, and password.
+- Sign in and sign out with Firebase Authentication.
+- Store each member's name, points, and streak in Cloud Firestore.
+- Start new members with 100 tribe points and a one-day streak.
 
-- [About](#about)
-- [Product Direction](#product-direction)
-- [Current Status](#current-status)
-- [How It Works](#how-it-works)
-- [Technology](#technology)
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
-- [Roadmap](#roadmap)
-- [Development](#development)
+### Daily rituals
 
-## About
+The app includes ten daily wellness activities, such as yoga, drinking water, gratitude, movement, breathing, healthy eating, walking, reading, and stretching.
 
-**The Living Tribe** is a native Android application written in Kotlin. The project is set up for a modern, edge-to-edge interface and includes the dependencies needed to add Firebase authentication and Google sign-in.
+- Check off completed rituals.
+- See the completion percentage update immediately.
+- Earn 10 points for each checked ritual.
+- Upload a photo as proof for any ritual.
+- View the current point total and streak.
 
-The repository is intentionally small and provides a straightforward base for developing the product without unnecessary architectural overhead.
+### Community feed
 
-## Product Direction
+- Share uploaded proof photos as community posts.
+- Display the newest posts first with live Firestore updates.
+- Give or remove a cheer from a post.
+- Send a predefined positive comment through a quick-cheer dialog.
+- Show the three most recent comments on each post.
+- Allow only the post owner to see the delete action in the UI.
+- Delete both the Firestore post and its associated Supabase image when possible.
 
-The Living Tribe is designed around a simple idea: digital communities should feel personal, organized, and easy to return to. The application is intended to give groups a shared mobile space where members can establish an identity, stay connected, and take part in community activity from one place.
+### Leaderboard
 
-The product direction prioritizes:
+- Rank members by tribe points in descending order.
+- Present the top three members on a podium.
+- Display all remaining members in a scrollable list starting at rank four.
+- Update the ranking in real time as Firestore data changes.
 
-- **Simple onboarding** through familiar Google account authentication
-- **Clear member identity** with profiles that help people recognize one another
-- **Shared activity** that keeps conversations, updates, and community moments accessible
-- **A calm mobile experience** built for regular use rather than visual noise
-- **Responsible growth** through a small native foundation that can evolve as requirements become clearer
+### Navigation and design
 
-## Current Status
+- Use a persistent bottom navigation bar for Rituals, Feed, and Leaderboard.
+- Follow a calm, nature-inspired visual style with green and neutral colors.
+- Use scrollable layouts and RecyclerView lists for different screen sizes.
 
-The application is in its initial development stage. It currently launches a single placeholder screen; authentication libraries and Firebase configuration are present, but the sign-in flow and product features have not yet been implemented.
+## Screens
 
-This repository should currently be viewed as the technical starting point for the product. The Android application shell, package structure, theme, test directories, and authentication dependencies are in place. The next phase is to define the first complete user journey and build the screens and data model around it.
-
-## How It Works
-
-The app uses a single Android application module. `MainActivity` is the current entry point and renders an XML layout through the Android View system. Edge-to-edge window handling is already enabled so future screens can use the full display while respecting system bars.
-
-Firebase Auth, Android Credential Manager, and Google ID are included as the intended authentication stack. Once implemented, Credential Manager will present the account flow, Google ID will provide the user credential, and Firebase Auth will establish the application session.
-
-```text
-Android device
-      │
-      ▼
-Credential Manager ──► Google ID
-      │
-      ▼
-Firebase Authentication
-      │
-      ▼
-The Living Tribe session and community experience
-```
+| Screen | Purpose |
+| --- | --- |
+| Login | Authenticates an existing member with email and password. |
+| Register | Creates a Firebase account and a corresponding Firestore profile. |
+| Daily Rituals | Tracks daily activities, progress, points, photo proof, and logout. |
+| Community Feed | Shows proof posts and supports cheers, comments, and owner deletion. |
+| Tribe Leaderboard | Displays the top three members and the rest of the live ranking. |
 
 ## Technology
 
-| Area | Choice |
+| Area | Technology |
 | --- | --- |
-| Language | Kotlin, targeting Java 11 |
-| UI | Android Views, Material Components, ConstraintLayout |
-| Authentication | Firebase Auth, Credential Manager, Google ID |
+| Language | Kotlin, targeting Java 11 bytecode |
+| UI | Android Views, XML layouts, Material Components |
+| Authentication | Firebase Authentication |
+| Database | Firebase Cloud Firestore |
+| Image storage | Supabase Storage |
+| Networking | OkHttp |
+| Image loading | Picasso |
+| Lists | AndroidX RecyclerView with custom adapters and view holders |
 | Build | Gradle Kotlin DSL with a version catalog |
-| Testing | JUnit, AndroidX Test, Espresso |
+| Testing | JUnit, AndroidX Test, and Espresso |
 
-The app targets Android API 36 and supports devices running Android 7.0 (API 24) or newer.
+The project currently compiles against Android API 36, targets API 34, and supports Android 8.0 (API 26) or newer.
 
-## Getting Started
+## How the Data Flows
 
-### Prerequisites
-
-- [Android Studio](https://developer.android.com/studio) with the Android SDK installed
-- JDK 17 or newer (the project compiles application code to Java 11 bytecode)
-- A connected Android device or emulator running API 24+
-
-### Run the app
-
-1. Clone the repository and open it in Android Studio.
-2. Allow Gradle to sync and install any requested SDK components.
-3. Select the `app` run configuration and a device.
-4. Click **Run**, or build from the command line:
-
-```bash
-./gradlew assembleDebug
+```text
+Email and password
+        |
+        v
+Firebase Authentication
+        |
+        +------> users collection in Cloud Firestore
+        |              |
+        |              +------> profile, points, streak, leaderboard
+        |
+Photo selected from the device
+        |
+        v
+Supabase Storage ------> public image URL
+                                |
+                                v
+                    posts collection in Firestore
+                                |
+                                v
+                 live community feed and cheers
 ```
 
-On Windows, use `gradlew.bat assembleDebug`.
+## Firestore Data Model
 
-> The repository contains a Firebase configuration file for the current application ID. Use a separate Firebase project and replace `app/google-services.json` when working with your own environment.
+### `users/{userId}`
+
+```text
+fullName: String
+email: String
+points: Number
+streak: Number
+```
+
+### `posts/{postId}`
+
+```text
+userId: String
+userName: String
+missionName: String
+imageUrl: String
+timestamp: Number
+likesCount: Number
+likedBy: List<String>
+comments: List<String>
+```
+
+Older or newly created posts can omit the reaction fields because the Kotlin model supplies safe default values.
 
 ## Project Structure
 
 ```text
 The-Living-Tribe/
-├── app/
-│   └── src/
-│       ├── main/          # Application code and resources
-│       ├── test/          # Local unit tests
-│       └── androidTest/   # On-device UI tests
-├── gradle/                # Wrapper and dependency catalog
-├── build.gradle.kts       # Root build configuration
-└── settings.gradle.kts    # Gradle project settings
+|-- app/
+|   |-- src/main/java/com/example/thelivingtribe/
+|   |   |-- MainActivity.kt
+|   |   |-- RegisterActivity.kt
+|   |   |-- DailyMissionsActivity.kt
+|   |   |-- FeedActivity.kt
+|   |   |-- FeedAdapter.kt
+|   |   |-- LeaderboardActivity.kt
+|   |   |-- LeaderboardAdapter.kt
+|   |   |-- Post.kt
+|   |   `-- LeaderboardUser.kt
+|   |-- src/main/res/
+|   `-- google-services.json
+|-- gradle/libs.versions.toml
+|-- build.gradle.kts
+`-- settings.gradle.kts
 ```
 
-The project uses a Gradle version catalog in `gradle/libs.versions.toml`, keeping library and plugin versions in one place. Application settings, supported Android versions, and release configuration live in `app/build.gradle.kts`.
+## Getting Started
 
-## Roadmap
+### Prerequisites
 
-The immediate roadmap is focused on turning the foundation into a complete first experience:
+- Android Studio with the Android SDK installed.
+- JDK 17 or newer.
+- An emulator or physical device running Android 8.0 or newer.
+- A Firebase project with Email/Password Authentication and Cloud Firestore enabled.
+- A Supabase project with a Storage bucket named `proofs`.
 
-- Implement Google sign-in and authenticated session handling
-- Add onboarding and member profile screens
-- Define the community data model and persistence layer
-- Build the first shared community activity flow
-- Add loading, empty, error, and signed-out states
-- Expand unit and instrumentation coverage around core journeys
+### Firebase configuration
 
-Roadmap items describe the intended direction and may change as the product is developed.
+Place the Firebase Android configuration file at:
 
-## Development
+```text
+app/google-services.json
+```
 
-Run the available checks before submitting changes:
+The Firebase project must be configured for the application ID `com.example.thelivingtribe`. Firestore security rules should restrict profile and post mutations to authorized users before the app is used outside a demonstration environment.
+
+### Supabase configuration
+
+Add the following values to the root `local.properties` file:
+
+```properties
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+```
+
+`local.properties` is intentionally ignored by Git and must not be committed. The `proofs` bucket and its access policies must support the upload, public-read, and delete operations used by the app.
+
+### Run the app
+
+1. Clone the repository.
+2. Open it in Android Studio.
+3. Add the required Firebase and Supabase configuration.
+4. Sync the Gradle project.
+5. Select the `app` run configuration and a compatible device.
+6. Run the application.
+
+From the command line:
 
 ```bash
-./gradlew test
-./gradlew connectedAndroidTest  # Requires a running device or emulator
+./gradlew assembleDebug
 ```
 
-Keep product text in `res/values/strings.xml`, add UI resources under `res/`, and place application logic in the existing `com.example.thelivingtribe` package.
+On Windows:
+
+```powershell
+.\gradlew.bat assembleDebug
+```
+
+## Current Limitations
+
+- Ritual checkbox state is not persisted and resets when the screen is recreated.
+- Rituals are not yet separated or reset automatically by calendar day.
+- The streak value is displayed but is not automatically recalculated.
+- A proof image can be uploaded independently of checking a ritual.
+- Selected images are currently read fully into memory before upload, so very large files may cause high memory usage.
+- Empty, loading, and dedicated offline states are still minimal.
+- The app does not automatically skip the login screen when a Firebase session already exists.
+- Automated tests currently cover only the starter unit and instrumentation checks.
+
+## Future Improvements
+
+- Persist daily ritual completion and reset it according to the user's local date.
+- Calculate streaks from verified daily activity.
+- Compress and stream images before uploading them.
+- Add profile editing and member avatars.
+- Add loading, empty, retry, and offline UI states.
+- Add password reset and email verification.
+- Improve navigation and session restoration.
+- Add unit, integration, and UI tests for the main user journeys.
+- Strengthen Firebase and Supabase authorization rules for production use.
+
+## Privacy and Security Notes
+
+The repository must never contain private service credentials. A Supabase anon key is intended for client use only when it is protected by appropriate Row Level Security and Storage policies. Firebase and Supabase rules are part of the application's security boundary and should be reviewed before publishing real user data.
+
+## License
+
+This project was created as an educational Android application. No separate open-source license has been added.

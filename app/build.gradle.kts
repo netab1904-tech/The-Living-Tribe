@@ -1,3 +1,8 @@
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.google.gms.google.services)
+}
+
 import java.util.Properties
 
 // טעינת מפתחות מתוך local.properties
@@ -7,15 +12,9 @@ if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
 }
 
-plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.google.gms.google.services)
-}
-
 android {
     namespace = "com.example.thelivingtribe"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.thelivingtribe"
@@ -27,8 +26,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // הוספת השדות ל-BuildConfig
-        val supabaseUrl = localProperties.getProperty("SUPABASE_URL") ?: ""
-        val supabaseAnonKey = localProperties.getProperty("SUPABASE_ANON_KEY") ?: ""
+        val supabaseUrl = localProperties.getProperty("SUPABASE_URL")
+            ?.trim()
+            ?.removeSurrounding("\"")
+            ?: ""
+        val supabaseAnonKey = localProperties.getProperty("SUPABASE_ANON_KEY")
+            ?.trim()
+            ?.removeSurrounding("\"")
+            ?: ""
 
         buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
         buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnonKey\"")
@@ -53,9 +58,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 }
 
 dependencies {
@@ -65,6 +67,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.cardview)
     implementation(libs.firebase.auth)
     implementation(libs.googleid)
     implementation(libs.material)
