@@ -2,6 +2,24 @@
 
 The Living Tribe is a native Android community app that helps people build healthy habits together. Members can complete daily rituals, earn tribe points, share photo proof of their progress, encourage one another in a live community feed, and compete on a real-time leaderboard.
 
+<p align="center">
+  <img src="docs/screenshots/app-overview.png" alt="The Living Tribe login, daily rituals, community feed, and leaderboard screens" width="900" />
+</p>
+
+<p align="center">
+  <strong>Build healthy habits. Share progress. Grow together.</strong>
+</p>
+
+## Experience at a Glance
+
+The app follows one connected member journey:
+
+1. **Join the tribe** with secure email and password authentication.
+2. **Complete daily rituals** and watch progress and tribe points increase.
+3. **Share photo proof** of a completed activity with the community.
+4. **Encourage other members** through cheers and quick positive comments.
+5. **Climb the leaderboard** as consistency turns into tribe points.
+
 ## Main Features
 
 ### Authentication and member profiles
@@ -46,6 +64,8 @@ The app includes ten daily wellness activities, such as yoga, drinking water, gr
 
 ## Screens
 
+The interface uses a calm, nature-inspired palette and keeps the three core areas one tap away through persistent bottom navigation.
+
 | Screen | Purpose |
 | --- | --- |
 | Login | Authenticates an existing member with email and password. |
@@ -53,6 +73,13 @@ The app includes ten daily wellness activities, such as yoga, drinking water, gr
 | Daily Rituals | Tracks daily activities, progress, points, photo proof, and logout. |
 | Community Feed | Shows proof posts and supports cheers, comments, and owner deletion. |
 | Tribe Leaderboard | Displays the top three members and the rest of the live ranking. |
+
+### Screen highlights
+
+- **Login:** A focused entry point for existing members, with direct access to registration.
+- **Daily Rituals:** Ten wellness activities, live completion percentage, photo-proof actions, points, and streak information.
+- **Community Feed:** A real-time stream of member achievements with images, owner-only deletion, cheers, and supportive comments.
+- **Leaderboard:** A dedicated top-three podium followed by a RecyclerView ranking for the rest of the tribe.
 
 ## Technology
 
